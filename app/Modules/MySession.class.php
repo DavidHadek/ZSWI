@@ -9,7 +9,7 @@ class MySession {
      */
     public function __construct()
     {
-        session_start(); // zahájím
+        session_start();
     }
 
     /**
