@@ -1,6 +1,6 @@
 <?php
 
-namespace kivweb\Controllers;
+namespace zswi\Controllers;
 
 /**
  * Rozhraní pro všechny ovladače (kontroléry).

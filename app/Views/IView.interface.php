@@ -1,6 +1,6 @@
 <?php
 
-namespace kivweb\Views;
+namespace zswi\Views;
 
 /**
  * Rozhraní pro všechny pohledy (views).
