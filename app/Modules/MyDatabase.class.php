@@ -1,6 +1,6 @@
 <?php
 
-namespace zswi\Models;
+namespace zswi\Modules;
 
 use PDOException;
 use PDOStatement;
@@ -136,6 +136,35 @@ class MyDatabase {
         $output = $this->pdo->prepare($q);
 
         return $output->execute($paramsChecked);
+    }
+
+
+    public function getUserDataByLogin(string $login) {
+        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE login = :login");
+
+        $stmt->bindValue(":login", $login);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function getUserDataByEmail(string $email) {
+        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email = :email");
+
+        $stmt->bindValue(":email", $email);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function addUserToDatabase(string $email, string $login, string $password, string $name) {
+        $stmt = $this->pdo->prepare("INSERT INTO user (login, name, email, password) VALUES (:login, :name, :email, :password)");
+        $stmt->bindValue(":login", $login);
+        $stmt->bindValue(":name", $name);
+        $stmt->bindValue(":email", $email);
+        $stmt->bindValue(":password", $password);
+
+        return $stmt->execute();
     }
 
     ///////////////////  KONEC: Obecne funkce  ////////////////////////////////////////////

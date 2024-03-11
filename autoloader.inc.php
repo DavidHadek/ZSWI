@@ -2,7 +2,7 @@
 
 const BASE_NAMESPACE_NAME = "zswi";
 const BASE_APP_DIR_NAME = "app";
-const FILE_EXTENSIONS = [".interface.php", ".inc.php", ".abstract.php", ".class.php", ".php"];
+const FILE_EXTENSIONS = [".interface.php", ".inc.php", ".abstract.php", ".class.php", ".php", ".enum.php"];
 
 spl_autoload_register(function ($className)
 {
