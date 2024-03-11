@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Sob 02. bře 2024, 20:22
+-- Vytvořeno: Pon 11. bře 2024, 20:33
 -- Verze serveru: 10.4.28-MariaDB
 -- Verze PHP: 8.2.4
 
@@ -36,6 +36,20 @@ CREATE TABLE `class` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabulky `info`
+--
+
+CREATE TABLE `info` (
+  `id_info` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `id_class` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabulky `message`
 --
 
@@ -44,17 +58,6 @@ CREATE TABLE `message` (
   `text` varchar(255) DEFAULT NULL,
   `id_student_task` int(11) DEFAULT NULL,
   `is_student` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
--- --------------------------------------------------------
-
---
--- Struktura tabulky `right`
---
-
-CREATE TABLE `right` (
-  `id_right` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
@@ -91,6 +94,7 @@ CREATE TABLE `task` (
   `id_task` int(11) NOT NULL,
   `id_class` int(11) DEFAULT NULL,
   `instructions` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `deadline` datetime DEFAULT NULL,
   `evaluation` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
@@ -103,11 +107,9 @@ CREATE TABLE `task` (
 
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `id_right` int(11) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
@@ -122,17 +124,18 @@ ALTER TABLE `class`
   ADD KEY `id_teacher` (`id_teacher`);
 
 --
+-- Indexy pro tabulku `info`
+--
+ALTER TABLE `info`
+  ADD PRIMARY KEY (`id_info`),
+  ADD KEY `id_class` (`id_class`);
+
+--
 -- Indexy pro tabulku `message`
 --
 ALTER TABLE `message`
   ADD PRIMARY KEY (`id_message`),
   ADD KEY `id_student_task` (`id_student_task`);
-
---
--- Indexy pro tabulku `right`
---
-ALTER TABLE `right`
-  ADD PRIMARY KEY (`id_right`);
 
 --
 -- Indexy pro tabulku `student_in_class`
@@ -161,50 +164,53 @@ ALTER TABLE `task`
 -- Indexy pro tabulku `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`),
-  ADD KEY `id_right` (`id_right`);
+  ADD PRIMARY KEY (`id_user`);
 
 --
--- Omezení pro exportované tabulky
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- Omezení pro tabulku `class`
+-- AUTO_INCREMENT pro tabulku `class`
 --
 ALTER TABLE `class`
-  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`id_teacher`) REFERENCES `user` (`id_user`);
+  MODIFY `id_class` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro tabulku `message`
+-- AUTO_INCREMENT pro tabulku `info`
+--
+ALTER TABLE `info`
+  MODIFY `id_info` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pro tabulku `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`id_student_task`) REFERENCES `student_task` (`id_student_task`);
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro tabulku `student_in_class`
+-- AUTO_INCREMENT pro tabulku `student_in_class`
 --
 ALTER TABLE `student_in_class`
-  ADD CONSTRAINT `student_in_class_ibfk_1` FOREIGN KEY (`id_student`) REFERENCES `user` (`id_user`),
-  ADD CONSTRAINT `student_in_class_ibfk_2` FOREIGN KEY (`id_class`) REFERENCES `class` (`id_class`);
+  MODIFY `id_student_in_class` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro tabulku `student_task`
+-- AUTO_INCREMENT pro tabulku `student_task`
 --
 ALTER TABLE `student_task`
-  ADD CONSTRAINT `student_task_ibfk_1` FOREIGN KEY (`id_student_in_class`) REFERENCES `student_in_class` (`id_student_in_class`),
-  ADD CONSTRAINT `student_task_ibfk_2` FOREIGN KEY (`id_task`) REFERENCES `task` (`id_task`);
+  MODIFY `id_student_task` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro tabulku `task`
+-- AUTO_INCREMENT pro tabulku `task`
 --
 ALTER TABLE `task`
-  ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`id_class`) REFERENCES `class` (`id_class`);
+  MODIFY `id_task` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Omezení pro tabulku `user`
+-- AUTO_INCREMENT pro tabulku `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_right`) REFERENCES `right` (`id_right`);
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
