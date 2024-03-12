@@ -5,6 +5,11 @@ namespace zswi\Controllers;
 use http\Client\Curl\User;
 use zswi\Modules\UserModel;
 
+define("smallPassword", 1);
+define("numbersRequired", 2);
+define("capitalRequired", 3);
+define("passwordOk", 0);
+
 class AuthPageController implements IController
 {
 
@@ -61,6 +66,9 @@ class AuthPageController implements IController
             $password = password_hash($password, PASSWORD_BCRYPT);
             $name = $_POST["register"]["name"] ?? "";
 
+            if (!$this->IsPasswordValid($password))
+                return "PASSWORD NOT VALID";
+
             if (UserModel::registerNewUser($email, $login, $password, $name))
                 return "SUCCESS";
             else
@@ -71,6 +79,30 @@ class AuthPageController implements IController
             return "UNKNOWN ERROR";
         }
     }
+
+
+    /**
+     * @param string $password
+     * Checks if Password is valid for registration
+     * 8 letters, contain numbers, contain capital
+     * @return int
+     */
+
+    private function IsPasswordValid(string $password){
+        if (strlen($password) < 8){
+            print "Small password!";
+            return smallPassword;
+        }elseif (!preg_match('/\d/', $password)){
+            print "Numbers required!";
+            return numbersRequired;
+        }elseif (!preg_match('/[A-Z]/', $password)){
+            print "Capital required!";
+            return capitalRequired;
+        }
+        print "Password accepted!";
+        return passwordOk;
+    }
+
 
     private function isValidLogin() {
 
