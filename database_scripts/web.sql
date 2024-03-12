@@ -107,6 +107,7 @@ CREATE TABLE `task` (
 
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
+  `login` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL
