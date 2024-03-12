@@ -8,6 +8,7 @@ class IntroductionView implements IView
     {
 //        echo "<link rel='stylesheet' href='$pathCss'>";
         echo "<head>";
+        echo "<title> Inroduction page </title>";
         echo "<link href='../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'>";
         echo "</head>";
         echo $templateData["page-title"] . "<br>";
