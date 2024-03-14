@@ -2,13 +2,14 @@
 
 namespace zswi\Controllers;
 
-use http\Client\Curl\User;
 use zswi\Modules\UserModel;
 
-define("smallPassword", 1);
-define("numbersRequired", 2);
-define("capitalRequired", 3);
-define("passwordOk", 0);
+
+//Might be used for later
+//define("smallPassword", 1);
+//define("numbersRequired", 2);
+//define("capitalRequired", 3);
+//define("passwordOk", 0);
 
 class AuthPageController implements IController
 {
@@ -61,7 +62,6 @@ class AuthPageController implements IController
             if ($password != $passwordCheck) {
                 return "PASSWORD NOT THE SAME";
             }
-            //TODO: check the strenght of password
 
             $password = password_hash($password, PASSWORD_BCRYPT);
             $name = $_POST["register"]["name"] ?? "";
@@ -84,23 +84,19 @@ class AuthPageController implements IController
     /**
      * @param string $password
      * Checks if Password is valid for registration
-     * 8 letters, contain numbers, contain capital
-     * @return int
+     * 8 letters, contains numbers, contains capital
+     * @return bool true if the password is valid, false othewise
      */
 
-    private function IsPasswordValid(string $password){
+    private function isPasswordValid(string $password): bool{
         if (strlen($password) < 8){
-            print "Small password!";
-            return smallPassword;
-        }elseif (!preg_match('/\d/', $password)){
-            print "Numbers required!";
-            return numbersRequired;
-        }elseif (!preg_match('/[A-Z]/', $password)){
-            print "Capital required!";
-            return capitalRequired;
+            return false;
+        } elseif (!preg_match('/\d/', $password)){
+            return false;
+        } elseif (!preg_match('/[A-Z]/', $password)){
+            return false;
         }
-        print "Password accepted!";
-        return passwordOk;
+        return true;
     }
 
 
