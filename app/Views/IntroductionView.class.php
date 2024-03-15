@@ -6,7 +6,6 @@ class IntroductionView implements IView
 
     public function printOutput(array $templateData, string $pageType): string
     {
-//        echo "<link rel='stylesheet' href='$pathCss'>";
         echo "<head>";
         echo "<title> Inroduction page </title>";
         echo "<link href='../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'>";

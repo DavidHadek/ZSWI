@@ -26,5 +26,11 @@ const WEB_PAGES = array(
         "controller_class_name" => \zswi\Controllers\IntroductionController::class,
         "view_class_name" => \zswi\Views\IntroductionView::class,
         "template_type" => "",
+    ),
+    "auth" => array(
+        "title" => "Authentication",
+        "controller_class_name" => \zswi\Controllers\AuthPageController::class,
+        "view_class_name" => \zswi\Views\AuthPageView::class,
+        "template_type" => "",
     )
 );
