@@ -14,24 +14,20 @@ class UserModel implements \JsonSerializable
 
     private string $email;
 
-    private int $idRights;
-
     /**
      * @param int $id
      * @param string $name
      * @param string $login
      * @param string $password
      * @param string $email
-     * @param int $idRights
      */
-    public function __construct(int $id, string $name, string $login, string $password, string $email, int $idRights)
+    public function __construct(int $id, string $name, string $login, string $password, string $email)
     {
         $this->id = $id;
         $this->name = $name;
         $this->login = $login;
         $this->password = $password;
         $this->email = $email;
-        $this->idRights = $idRights;
     }
 
     public static function getUserByLogin(string $login): ?UserModel {
@@ -47,15 +43,14 @@ class UserModel implements \JsonSerializable
         $name = $data["name"];
         $email = $data["email"];
         $password = $data["password"];
-        $idRights = $data["id_right"];
 
-        return new UserModel($id, $name, $login, $password, $email, $idRights);
+        return new UserModel($id, $name, $login, $password, $email);
     }
 
     public static function getUserByEmail(string $email): ?UserModel {
         $db = new MyDatabase();
 
-        $data = $db->getUserDataByLogin($email);
+        $data = $db->getUserDataByEmail($email);
 
         if (empty($data))
             return null;
@@ -65,12 +60,11 @@ class UserModel implements \JsonSerializable
         $name = $data["name"];
         $email = $data["email"];
         $password = $data["password"];
-        $idRights = $data["id_right"];
 
-        return new UserModel($id, $name, $login, $password, $email, $idRights);
+        return new UserModel($id, $name, $login, $password, $email);
     }
 
-    public static function registerNewUser(string $email, string $login, string $password, string $name) {
+    public static function registerNewUser(string $email, string $login, string $password, string $name) : bool {
         $db = new MyDatabase();
 
         return $db->addUserToDatabase($email, $login, $password, $name);
@@ -102,11 +96,6 @@ class UserModel implements \JsonSerializable
         return $this->email;
     }
 
-    public function getIdRights(): int
-    {
-        return $this->idRights;
-    }
-
 
     public function jsonSerialize(): array
     {
@@ -115,8 +104,7 @@ class UserModel implements \JsonSerializable
             "login" => $this->login,
             "email" => $this->email,
             "password" => $this->password,
-            "name" => $this->name,
-            "id_rights" => $this->idRights,
+            "name" => $this->name
         ];
     }
 }

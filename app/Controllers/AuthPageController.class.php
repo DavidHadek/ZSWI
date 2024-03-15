@@ -27,28 +27,56 @@ class AuthPageController implements IController
         }
 
         if (isset($_POST["register"])) {
-            $errorMsg = $this->isValidRegistration();
+            $errorMsg = $this->validateAndRegister();
+            $templateData["alert-msg"] = $errorMsg;
         }
 
         if (isset($_POST["login"])) {
-            $this->logonUser();
+            if ($this->validateAndLogon()) {
+                $errorMsg = "SUCCESS";
+            } else {
+                $errorMsg = "INVALID USERNAME OR PASSWORD";
+            }
+            $templateData["alert-msg"] = $errorMsg;
         }
 
         return $templateData;
     }
 
 
-    private function logonUser() {
+    private function validateAndLogon() : bool {
+        $usernameOrEmail = $_POST["username"];
+        $password = $_POST["password"];
 
+        if (empty($usernameOrEmail) or empty($password))
+            return false;
+
+        $user = empty($user) ? UserModel::getUserByLogin($usernameOrEmail) : null;
+        $user = empty($user) ? UserModel::getUserByEmail($usernameOrEmail) : $user;
+
+        if (empty($user))
+            return false;
+
+
+        if (!password_verify($password, $user->getPassword()))
+            return false;
+
+
+        session_start();
+
+        $_SESSION["user"] = $user;
+        return true;
     }
-    private function registerUser() {
 
-    }
-
-    private function isValidRegistration() :string {
+    private function validateAndRegister() :string {
         try {
-            $email = $_POST["register"]["email"];
-            $login = $_POST["register"]["username"];
+            $email = $_POST["email"];
+            $login = $_POST["username"];
+
+            if (empty($email) or empty($login)) {
+                return "NO EMAIL OR USERNAME SPECIFIED";
+            }
+
             if (UserModel::getUserByEmail($email) != null) {
                 return "EMAIL ALREADY EXISTS";
             }
@@ -57,17 +85,17 @@ class AuthPageController implements IController
                 return "USERNAME ALREADY EXISTS";
             }
 
-            $password = $_POST["register"]["password"];
-            $passwordCheck = $_POST["register"]["password-check"];
+            $password = $_POST["password"];
+            $passwordCheck = $_POST["password-check"];
             if ($password != $passwordCheck) {
                 return "PASSWORD NOT THE SAME";
             }
 
-            $password = password_hash($password, PASSWORD_BCRYPT);
-            $name = $_POST["register"]["name"] ?? "";
-
             if (!$this->IsPasswordValid($password))
                 return "PASSWORD NOT VALID";
+
+            $password = password_hash($password, PASSWORD_BCRYPT);
+            $name = $_POST["name"] ?? "";
 
             if (UserModel::registerNewUser($email, $login, $password, $name))
                 return "SUCCESS";
@@ -97,11 +125,6 @@ class AuthPageController implements IController
             return false;
         }
         return true;
-    }
-
-
-    private function isValidLogin() {
-
     }
 
 
