@@ -8,7 +8,6 @@ const DB_USER = "root";
 const DB_PASS = "";
 
 const TABLE_USER = "user";
-const TABLE_RIGHT = "right";
 const TABLE_CLASS = "class";
 const TABLE_STUDENT_IN_CLASS = "student_in_class";
 const TABLE_TASK = "task";

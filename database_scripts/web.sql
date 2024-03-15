@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `class` (
   `id_class` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
   `id_teacher` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 

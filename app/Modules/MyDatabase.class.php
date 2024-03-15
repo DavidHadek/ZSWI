@@ -138,39 +138,57 @@ class MyDatabase {
         return $output->execute($paramsChecked);
     }
 
+    public function addUserToDatabase(string $email, string $login, string $password, string $name) :bool{
+        $params = array(
+            "kLogin" => $login,
+            "kName" => $name,
+            "kEmail" => $email,
+            "kPassword" => $password,
+        );
+
+        $insertStatement = "login, name, password, email";
+        $insertValues = ":kLogin, :kName, :kPassword, :kEmail";
+        return $this->insertIntoTable(TABLE_USER, $insertStatement, $insertValues, $params);
+    }
 
     public function getUserDataByLogin(string $login) {
-        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE login = :login");
-
-        $stmt->bindValue(":login", $login);
-        $stmt->execute();
-
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $params = array("kLogin" => $login);
+        $user = $this->selectFromTable(TABLE_USER, $params, "login = :kLogin");
+        return $user[0];
     }
 
     public function getUserDataByEmail(string $email) {
-        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email = :email");
-
-        $stmt->bindValue(":email", $email);
-        $stmt->execute();
-
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $params = array("kEmail" => $email);
+        $user = $this->selectFromTable(TABLE_USER, $params, "email = :kEmail");
+        return $user[0];
     }
 
-    public function addUserToDatabase(string $email, string $login, string $password, string $name) {
-        $stmt = $this->pdo->prepare("INSERT INTO user (login, name, email, password) VALUES (:login, :name, :email, :password)");
-        $stmt->bindValue(":login", $login);
-        $stmt->bindValue(":name", $name);
-        $stmt->bindValue(":email", $email);
-        $stmt->bindValue(":password", $password);
+    public function addClassToDatabase(string $name, string $color, int $id_teacher) :bool{
+        $params = array(
+            "kName" => $name,
+            "kColor" => $color,
+            "kIdTeacher" => $id_teacher,
+        );
 
-        return $stmt->execute();
+        $insertStatement = "name, color, id_teacher";
+        $insertValues = ":kName, :kColor, :kIdTeacher";
+        return $this->insertIntoTable(TABLE_CLASS, $insertStatement, $insertValues, $params);
     }
 
-    ///////////////////  KONEC: Obecne funkce  ////////////////////////////////////////////
+    public function getClassDataByName(string $name) {
+        $params = array("kName" => $name);
+        $class = $this->selectFromTable(TABLE_CLASS, $params, "name = :kName");
+        return $class[0];
+    }
 
-    ///////////////////  Konkretni funkce  ////////////////////////////////////////////
+    public function getClassesByTeacherID(int $id) :array {
+        $params = array("kId" => $id);
+        return $this->selectFromTable(TABLE_CLASS, $params, "id_teacher = :kId");
+    }
 
-    ///////////////////  KONEC: Konkretni funkce  ////////////////////////////////////////////
+    public function getClassesByStudentID(int $id) :array {
+        $params = array("kId" => $id);
+        return $this->selectFromTable(TABLE_STUDENT_IN_CLASS, $params, "id_student = :kId");
+    }
 }
 

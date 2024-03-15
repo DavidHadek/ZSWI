@@ -2,6 +2,8 @@
 
 namespace zswi\Controllers;
 
+use zswi\Models\MyLogger;
+use zswi\Modules\MyDatabase;
 use zswi\Modules\UserModel;
 
 
@@ -13,6 +15,11 @@ use zswi\Modules\UserModel;
 
 class AuthPageController implements IController
 {
+    private MyLogger $myLG;
+
+    public function __construct() {
+        $this->myLG = new MyLogger();
+    }
 
     public function show(string $pageTitle): array
     {
@@ -57,14 +64,8 @@ class AuthPageController implements IController
         if (empty($user))
             return false;
 
+        $this->myLG->userLogin($user->getName(), $password);
 
-        if (!password_verify($password, $user->getPassword()))
-            return false;
-
-
-        session_start();
-
-        $_SESSION["user"] = $user;
         return true;
     }
 
