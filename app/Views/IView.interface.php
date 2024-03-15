@@ -12,6 +12,6 @@ interface IView {
      * @param string $pageType
      * @return string
      */
-    public function printOutput( array $templateData, string $pageType): string;
+    public function printOutput( array $templateData, string $pageType);
 
 }

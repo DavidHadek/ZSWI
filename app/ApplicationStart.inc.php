@@ -12,6 +12,8 @@ class ApplicationStart {
             $pageSettings = WEB_PAGES[DEFAULT_WEB_PAGE_KEY];
         }
 
+//        $pageSettings = WEB_PAGES['auth'];
+        var_dump($pageSettings);
         $controller = new $pageSettings["controller_class_name"];
         $data = $controller->show($pageSettings["title"]);
         $view = new $pageSettings["view_class_name"];

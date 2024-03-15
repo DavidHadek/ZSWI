@@ -4,17 +4,19 @@ namespace zswi\Views;
 class IntroductionView implements IView
 {
 
-    public function printOutput(array $templateData, string $pageType): string
+    public function printOutput(array $templateData, string $pageType)
     {
-        echo "<head>";
-        echo "<title> Inroduction page </title>";
-        echo "<link href='../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'>";
-        echo "</head>";
-        echo $templateData["page-title"] . "<br>";
-        echo $templateData["test"] . "<br>";
-        echo $templateData["malicious-text"];
+        require_once ROOT. '/vendor/autoload.php';
 
-        echo "<p class='fw-bolder text-success'>Is bootstrap working for you? This text should be bolder and green.</p>";
-        return "";
+        $templatesDirectory = TWIG_TPL_DIR;
+//        $webInfo = WEB_PAGES[$pageType];
+        $currentTemplateName = $pageType;
+        var_dump($templatesDirectory);
+        $loader = new \Twig\Loader\FilesystemLoader($templatesDirectory);
+        $twig = new \Twig\Environment($loader, ['debug' => true,]);
+
+        $twig->addExtension(new \Twig\Extension\DebugExtension());
+
+        echo $twig->render($currentTemplateName, $templateData);
     }
 }

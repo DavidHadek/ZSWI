@@ -1,0 +1,115 @@
+{% block header %}
+    {% include("header.twig") %}
+{% endblock %}
+
+
+{% if error != 0 %}
+    <div class="slide">
+        <div class="alert alert-danger a" role="alert">
+            {% if error == 1 %}
+                Hesla se musí schodovat.
+            {% elseif error == 2 %}
+                Tento login již někdo používá.
+            {% elseif error == 3 %}
+                Pod tímto emailem je již registrován účet.
+            {% elseif error == 5 %}
+                Údaje jsou moc dlohé
+            {% else %}
+                Registrace selhala, zkuste to prosím později.
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+<body class="bg-light">
+
+{% block navar %}
+    {% include("navbar.twig") %}
+{% endblock %}
+
+    <section class="text-center">
+        <div class="p-5 bg"></div>
+        <div class="card mx-4 mx-md-5 shadow-5-strong form">
+            <div class="card-body py-5 px-md-5">
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-5">Zaregistrovat</h2>
+                        <form id="f" action="index.php?page=home" method="post" oninput="x.value=(pas.value==pas2.value)?'':' - Hesla musí být shodná'">
+                            <!-- Jmeno a Prijmeni -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="jmeno">Jméno</label>
+                                        <input type="text" maxlength="20" id="jmeno" name="jmeno" class="form-control" value="{{ jmeno is defined ? jmeno : '' }}" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="prijmeni">Příjmení</label>
+                                        <input type="text" maxlength="20" id="prijmeni" name="prijmeni" class="form-control" value="{{prijmeni is defined ? prijmeni : '' }}" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email a loginController -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="email">Emailová adresa</label>
+                                        <input type="email" maxlength="40" id="email" name="email" class="form-control" value="{{ email is defined ? email : '' }}" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="login">Login</label>
+                                        <input type="text"  maxlength="40" id="login" name="login" class="form-control" value="{{ login is defined ? login : '' }}" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Heslo -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="pas">Heslo</label>
+                                        <input type="password" id="pas" name="heslo" class="form-control" value="{{heslo is defined ? heslo : '' }}" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="pas2">Potvrďte helso</label>
+                                        <output name="x" for="pas pas2"></output>
+                                        <input type="password" id="pas2" name="heslo2" class="form-control" value="{{heslo2 is defined ? heslo2 : '' }}" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Potvrzeni -->
+                            <input type="submit" class="btn btn-primary btn-block mb-4" name="registrace" value="Registrovat" onclick="validateValues(event)">
+                            <p>Máte již vytvořený účet? <a href="index.php?page=login" class="link-info">Přihlásit</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /**
+         * Validuje hodnoty dvou polí s heslem.
+         * @param {Event} event - Událost formuláře.
+         */
+        function validateValues(event) {
+            var input1Value = document.getElementById('pas').value;
+            var input2Value = document.getElementById('pas2').value;
+
+            if (input1Value !== input2Value) {
+                event.preventDefault();
+            }
+        }
+    </script>
+
+{% block footer %}
+    {% include("footer.twig") %}
+{% endblock %}
