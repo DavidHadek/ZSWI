@@ -12,6 +12,15 @@ class AuthPageView implements IView
             return "";
         }
 
+        if (isset($templateData["alert-msg"])) {
+            $msg = $templateData["alert-msg"];
+            if ($msg == "SUCCESS") {
+                echo "<div class='alert alert-success'>$msg</div>";
+            } else {
+                echo "<div class='alert alert-danger'>$msg</div>";
+            }
+        }
+
         if (isset($templateData["part"]) && $templateData["part"] == "register") {
             ?>
 
@@ -27,11 +36,14 @@ class AuthPageView implements IView
                 <br>
                 <label>*Repeat password:</label>
                 <input type="password" name="password-check" required>
+                <br>
                 <label>Name:</label>
                 <input type="text" name="name">
                 <br>
                 <input type="submit" name="register" value="register">
             </form>
+            <br>
+            <a href="?page=auth&part=login">I already have an account</a>
 
 <?php
         } else {
@@ -45,6 +57,8 @@ class AuthPageView implements IView
                 <br>
                 <input type="submit" name="login" value="login">
             </form>
+            <br>
+            <a href="?page=auth&part=register">I don't have an account</a>
 <?php
         }
 

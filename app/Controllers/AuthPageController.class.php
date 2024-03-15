@@ -2,8 +2,14 @@
 
 namespace zswi\Controllers;
 
-use http\Client\Curl\User;
 use zswi\Modules\UserModel;
+
+
+//Might be used for later
+//define("smallPassword", 1);
+//define("numbersRequired", 2);
+//define("capitalRequired", 3);
+//define("passwordOk", 0);
 
 class AuthPageController implements IController
 {
@@ -21,56 +27,104 @@ class AuthPageController implements IController
         }
 
         if (isset($_POST["register"])) {
-            $errorMsg = $this->isValidRegistration();
+            $errorMsg = $this->validateAndRegister();
+            $templateData["alert-msg"] = $errorMsg;
         }
 
         if (isset($_POST["login"])) {
-            $this->logonUser();
+            if ($this->validateAndLogon()) {
+                $errorMsg = "SUCCESS";
+            } else {
+                $errorMsg = "INVALID USERNAME OR PASSWORD";
+            }
+            $templateData["alert-msg"] = $errorMsg;
         }
 
         return $templateData;
     }
 
 
-    private function logonUser() {
+    private function validateAndLogon() : bool {
+        $usernameOrEmail = $_POST["username"];
+        $password = $_POST["password"];
 
+        if (empty($usernameOrEmail) or empty($password))
+            return false;
+
+        $user = empty($user) ? UserModel::getUserByLogin($usernameOrEmail) : null;
+        $user = empty($user) ? UserModel::getUserByEmail($usernameOrEmail) : $user;
+
+        if (empty($user))
+            return false;
+
+
+        if (!password_verify($password, $user->getPassword()))
+            return false;
+
+
+        session_start();
+
+        $_SESSION["user"] = $user;
+        return true;
     }
 
-    private function isValidRegistration() :string {
+    private function validateAndRegister() :string {
         try {
-            $email = $_POST["register"]["email"];
-            $login = $_POST["register"]["username"];
+            $email = $_POST["email"];
+            $login = $_POST["username"];
+
+            if (empty($email) or empty($login)) {
+                return "NO EMAIL OR USERNAME SPECIFIED";
+            }
 
             if (UserModel::getUserByEmail($email) != null) {
-                return \Alert::EMAIL_ALREADY_EXISTS->value;
+                return "EMAIL ALREADY EXISTS";
             }
 
             if (UserModel::getUserByLogin($login)) {
-                return \Alert::USERNAME_ALREADY_EXISTS->value;
+                return "USERNAME ALREADY EXISTS";
             }
 
-            $password = $_POST["register"]["password"];
-            $passwordCheck = $_POST["register"]["password-check"];
+            $password = $_POST["password"];
+            $passwordCheck = $_POST["password-check"];
             if ($password != $passwordCheck) {
-                return \Alert::PASSWORD_NOT_THE_SAME->value;
+                return "PASSWORD NOT THE SAME";
             }
-            //TODO: check the strenght of password
+
+            if (!$this->IsPasswordValid($password))
+                return "PASSWORD NOT VALID";
 
             $password = password_hash($password, PASSWORD_BCRYPT);
-            $name = $_POST["register"]["name"] ?? "";
+            $name = $_POST["name"] ?? "";
 
             if (UserModel::registerNewUser($email, $login, $password, $name))
-                return \Alert::SUCCESS->value;
+                return "SUCCESS";
             else
-                return \Alert::UNKNOWN_ERROR->value;
+                return "UNKNOWN ERROR";
+
 
         } catch (\Exception) {
-            return \Alert::UNKNOWN_ERROR->value;
+            return "UNKNOWN ERROR";
         }
     }
 
-    private function isValidLogin() {
 
+    /**
+     * @param string $password
+     * Checks if Password is valid for registration
+     * 8 letters, contains numbers, contains capital
+     * @return bool true if the password is valid, false othewise
+     */
+
+    private function isPasswordValid(string $password): bool{
+        if (strlen($password) < 8){
+            return false;
+        } elseif (!preg_match('/\d/', $password)){
+            return false;
+        } elseif (!preg_match('/[A-Z]/', $password)){
+            return false;
+        }
+        return true;
     }
 
 

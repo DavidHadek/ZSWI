@@ -5,9 +5,13 @@ namespace zswi\Modules;
 class UserModel implements \JsonSerializable
 {
     private int $id;
+
     private string $name;
+
     private string $login;
+
     private string $password;
+
     private string $email;
 
     /**
@@ -46,7 +50,7 @@ class UserModel implements \JsonSerializable
     public static function getUserByEmail(string $email): ?UserModel {
         $db = new MyDatabase();
 
-        $data = $db->getUserDataByLogin($email);
+        $data = $db->getUserDataByEmail($email);
 
         if (empty($data))
             return null;
@@ -60,7 +64,7 @@ class UserModel implements \JsonSerializable
         return new UserModel($id, $name, $login, $password, $email);
     }
 
-    public static function registerNewUser(string $email, string $login, string $password, string $name) {
+    public static function registerNewUser(string $email, string $login, string $password, string $name) : bool {
         $db = new MyDatabase();
 
         return $db->addUserToDatabase($email, $login, $password, $name);
@@ -92,6 +96,7 @@ class UserModel implements \JsonSerializable
         return $this->email;
     }
 
+
     public function jsonSerialize(): array
     {
         return [
@@ -99,7 +104,7 @@ class UserModel implements \JsonSerializable
             "login" => $this->login,
             "email" => $this->email,
             "password" => $this->password,
-            "name" => $this->name,
+            "name" => $this->name
         ];
     }
 }
