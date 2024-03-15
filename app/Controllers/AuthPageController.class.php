@@ -40,9 +40,9 @@ class AuthPageController implements IController
 
         if (isset($_POST["login"])) {
             if ($this->validateAndLogon()) {
-                $errorMsg = "SUCCESS";
+                $errorMsg = \Alert::SUCCESS->value;
             } else {
-                $errorMsg = "INVALID USERNAME OR PASSWORD";
+                $errorMsg = \Alert::INVALID_USER_PASSWORD->value;
             }
             $templateData["alert-msg"] = $errorMsg;
         }
@@ -75,37 +75,37 @@ class AuthPageController implements IController
             $login = $_POST["username"];
 
             if (empty($email) or empty($login)) {
-                return "NO EMAIL OR USERNAME SPECIFIED";
+                return \Alert::NO_EMAIL_LOGIN->value;
             }
 
             if (UserModel::getUserByEmail($email) != null) {
-                return "EMAIL ALREADY EXISTS";
+                return \Alert::EMAIL_ALREADY_EXISTS->value;
             }
 
             if (UserModel::getUserByLogin($login)) {
-                return "USERNAME ALREADY EXISTS";
+                return \Alert::USERNAME_ALREADY_EXISTS->value;
             }
 
             $password = $_POST["password"];
             $passwordCheck = $_POST["password-check"];
             if ($password != $passwordCheck) {
-                return "PASSWORD NOT THE SAME";
+                return \Alert::PASSWORD_NOT_THE_SAME->value;
             }
 
             if (!$this->IsPasswordValid($password))
-                return "PASSWORD NOT VALID";
+                return \Alert::PASSWORD_NOT_VALID->value;
 
             $password = password_hash($password, PASSWORD_BCRYPT);
             $name = $_POST["name"] ?? "";
 
             if (UserModel::registerNewUser($email, $login, $password, $name))
-                return "SUCCESS";
+                return \Alert::SUCCESS->value;
             else
-                return "UNKNOWN ERROR";
+                return \Alert::UNKNOWN_ERROR->value;
 
 
         } catch (\Exception) {
-            return "UNKNOWN ERROR";
+            return \Alert::UNKNOWN_ERROR->value;
         }
     }
 
