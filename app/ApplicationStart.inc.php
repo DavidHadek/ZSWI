@@ -17,6 +17,6 @@ class ApplicationStart {
         $controller = new $pageSettings["controller_class_name"];
         $data = $controller->show($pageSettings["title"]);
         $view = new $pageSettings["view_class_name"];
-        echo $view->printOutput($data, $pageSettings["template_type"]);
+        $view->printOutput($data, $pageSettings["template_type"]);
     }
 }

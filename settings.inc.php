@@ -29,13 +29,19 @@ const WEB_PAGES = array(
     "home" => array(
         "title" => "Main page",
         "controller_class_name" => \zswi\Controllers\IntroductionController::class,
-        "view_class_name" => \zswi\Views\IntroductionView::class,
+        "view_class_name" => \zswi\Views\View::class,
         "template_type" => "login.twig",
     ),
     "auth" => array(
-        "title" => "Authentication",
+        "title" => "Login",
         "controller_class_name" => \zswi\Controllers\AuthPageController::class,
-        "view_class_name" => \zswi\Views\AuthPageView::class,
+        "view_class_name" => \zswi\Views\View::class,
         "template_type" => "login.twig",
+    ),
+    "registration" => array(
+        "title" => "Registration",
+        "controller_class_name" => \zswi\Controllers\AuthPageController::class,
+        "view_class_name" => \zswi\Views\View::class,
+        "template_type" => "registration.twig",
     )
 );
