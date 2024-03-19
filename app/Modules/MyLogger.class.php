@@ -1,10 +1,8 @@
 <?php
 
-namespace zswi\Models;
+namespace zswi\Modules;
 
 use PDOException;
-use zswi\Modules\MyDatabase;
-use zswi\Modules\UserModel;
 
 class MyLogger {
 
