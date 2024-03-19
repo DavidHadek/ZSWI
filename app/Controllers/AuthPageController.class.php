@@ -2,7 +2,7 @@
 
 namespace zswi\Controllers;
 
-use zswi\Models\MyLogger;
+use zswi\Modules\MyLogger;
 use zswi\Modules\MyDatabase;
 use zswi\Modules\UserModel;
 
