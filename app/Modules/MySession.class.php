@@ -1,6 +1,6 @@
 <?php
 
-namespace zswi\Models;
+namespace zswi\Modules;
 
 class MySession {
 

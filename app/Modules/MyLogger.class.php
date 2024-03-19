@@ -1,6 +1,6 @@
 <?php
 
-namespace zswi\Models;
+namespace zswi\Modules;
 
 use PDOException;
 
@@ -28,15 +28,15 @@ class MyLogger {
      */
     public function userLogin(string $login, string $password): bool {
 
-        $params = array("kLogin" => $login);
-        $where = "login = :kLogin";
-        $user = $this->myDB->selectFromTable(TABLE_USER, $params, $where);
+        $user = empty($user) ? UserModel::getUserByLogin($login) : null;
+        $user = empty($user) ? UserModel::getUserByEmail($login) : $user;
 
-        if (!empty($user)) {
-            if (password_verify($password, $user[0]['password'])) {
-                $this->mySession->addSession(self::KEY_USER, $user[0]['id_user']);
-                return true;
-            }
+        if (empty($user))
+            return false;
+
+        if (password_verify($password, $user->getPassword())) {
+            $this->mySession->addSession(self::KEY_USER, $user);
+            return true;
         }
 
         return false;
@@ -70,7 +70,6 @@ class MyLogger {
      */
     public function getLoggedUserData(): mixed
     {
-        //TODO
-        return null;
+        return $this->mySession->readSession(self::KEY_USER);
     }
 }

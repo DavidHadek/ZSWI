@@ -2,12 +2,18 @@
 
 namespace zswi\Views;
 
+use zswi\Modules\MyLogger;
+
 class AuthPageView implements IView
 {
+    private $logger;
+    private $user;
 
     public function printOutput(array $templateData, string $pageType): string
     {
-        if (isset($_SESSION["user"])) {
+        $logger = new MyLogger();
+        if ($logger->isUserLogged()) {
+            $user = $logger->getLoggedUserData();
             echo "<p>You are logged in.</p><br><a href='?page=auth&logout'>Logout</a>";
             return "";
         }

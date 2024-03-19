@@ -2,6 +2,7 @@
 
 namespace zswi\Controllers;
 
+use zswi\Modules\MyLogger;
 use zswi\Modules\UserModel;
 
 
@@ -19,6 +20,11 @@ class AuthPageController implements IController
         $templateData = array();
 
         $templateData["page-title"] = $pageTitle;
+
+        if (isset($_GET["logout"])) {
+            $this->logout();
+            $templateData["alert-msg"] = "Successfully logout";
+        }
 
         if (isset($_GET["part"]) && $_GET["part"] == "register") {
             $templateData["part"] = "register";
@@ -48,24 +54,8 @@ class AuthPageController implements IController
         $usernameOrEmail = $_POST["username"];
         $password = $_POST["password"];
 
-        if (empty($usernameOrEmail) or empty($password))
-            return false;
-
-        $user = empty($user) ? UserModel::getUserByLogin($usernameOrEmail) : null;
-        $user = empty($user) ? UserModel::getUserByEmail($usernameOrEmail) : $user;
-
-        if (empty($user))
-            return false;
-
-
-        if (!password_verify($password, $user->getPassword()))
-            return false;
-
-
-        session_start();
-
-        $_SESSION["user"] = $user;
-        return true;
+        $logger = new MyLogger();
+        return $logger->userLogin($usernameOrEmail, $password);
     }
 
     private function validateAndRegister() :string {
@@ -125,6 +115,13 @@ class AuthPageController implements IController
             return false;
         }
         return true;
+    }
+
+    private function logout() {
+        $logger = new MyLogger();
+        if ($logger->isUserLogged()) {
+            $logger->userLogout();
+        }
     }
 
 
