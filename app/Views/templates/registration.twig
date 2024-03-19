@@ -1,0 +1,91 @@
+{% block header %}
+    {% include("header.twig") %}
+{% endblock %}
+
+<body class="bg-light">
+    <section class="text-center">
+        <div class="p-5 bg"></div>
+        <div class="card mx-4 mx-md-5 shadow-5-strong form">
+            <div class="card-body py-5 px-md-5">
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-5">Register</h2>
+                        <form id="f" action="index.php?page=home" method="post" oninput="x.value=(pas.value==pas2.value)?'':' - Hesla musí být shodná'">
+                            <!-- Jmeno a Prijmeni -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="name">Name</label>
+                                        <input type="text" maxlength="20" id="name" name="name" class="form-control" value="" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="surname">Surname</label>
+                                        <input type="text" maxlength="20" id="surname" name="surname" class="form-control" value="" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email a loginController -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="email" maxlength="40" id="email" name="email" class="form-control" value="{{ email is defined ? email : '' }}" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="login">Login</label>
+                                        <input type="text"  maxlength="40" id="login" name="login" class="form-control" value="{{ login is defined ? login : '' }}" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Heslo -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="password">Password</label>
+                                        <input type="password" id="password" name="password" class="form-control" value="{{heslo is defined ? heslo : '' }}" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="password2">Confirm password</label>
+                                        <output name="x" for="password password2"></output>
+                                        <input type="password" id="password" name="password2" class="form-control" value="{{heslo2 is defined ? heslo2 : '' }}" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Potvrzeni -->
+                            <input type="submit" class="btn btn-primary btn-block mb-4" name="register" value="Register" onclick="validateValues(event)">
+                            <p>Already have an account? <a href="index.php?page=login" class="link-info">Log in</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /**
+         * Validuje hodnoty dvou polí s heslem.
+         * @param {Event} event - Událost formuláře.
+         */
+        function validateValues(event) {
+            var input1Value = document.getElementById('password').value;
+            var input2Value = document.getElementById('password2').value;
+
+            if (input1Value !== input2Value) {
+                event.preventDefault();
+            }
+        }
+    </script>
+
+{% block footer %}
+    {% include("footer.twig") %}
+{% endblock %}

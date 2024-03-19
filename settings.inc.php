@@ -7,6 +7,11 @@ const DB_NAME = "web";
 const DB_USER = "root";
 const DB_PASS = "";
 
+define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+const APP = ROOT . 'app' . DIRECTORY_SEPARATOR;
+const VIEW = APP . 'Views' . DIRECTORY_SEPARATOR;
+const TWIG_TPL_DIR = VIEW . 'templates' . DIRECTORY_SEPARATOR;
+
 const TABLE_USER = "user";
 const TABLE_RIGHT = "right";
 const TABLE_CLASS = "class";
@@ -24,13 +29,19 @@ const WEB_PAGES = array(
     "home" => array(
         "title" => "Main page",
         "controller_class_name" => \zswi\Controllers\IntroductionController::class,
-        "view_class_name" => \zswi\Views\IntroductionView::class,
-        "template_type" => "",
+        "view_class_name" => \zswi\Views\View::class,
+        "template_type" => "login.twig",
     ),
     "auth" => array(
-        "title" => "Authentication",
+        "title" => "Login",
         "controller_class_name" => \zswi\Controllers\AuthPageController::class,
-        "view_class_name" => \zswi\Views\AuthPageView::class,
-        "template_type" => "",
+        "view_class_name" => \zswi\Views\View::class,
+        "template_type" => "login.twig",
+    ),
+    "registration" => array(
+        "title" => "Registration",
+        "controller_class_name" => \zswi\Controllers\AuthPageController::class,
+        "view_class_name" => \zswi\Views\View::class,
+        "template_type" => "registration.twig",
     )
 );
