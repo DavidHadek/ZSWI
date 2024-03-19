@@ -2,22 +2,44 @@
 
 namespace zswi\Controllers;
 
+use zswi\Models\ClassModel;
+use zswi\Models\MyLogger;
+
 class IntroductionController implements IController
 {
+    private MyLogger $myLG;
+
+    public function __construct() {
+        $this->myLG = new MyLogger();
+    }
 
     public function show(string $pageTitle): array
     {
         $tplData = array();
 
         $tplData["page-title"] = $pageTitle;
-        $tplData["test"] = "This is a testing page. Seems like it works!";
 
-        $purifier = \HTMLPurifier::getInstance();
-        $tplData["malicious-text"] = $purifier->purify("<script src='dkawpodkpoawd'>dawdawd</script> ahoj");
+        if ($this->myLG->isUserLogged()) {
+            $userData = $this->myLG->getLoggedUserData();
+            $tplData["name"] = $userData->getName();
+            //TODO IMAGE
 
+            $classroomData = $this->getClassrooms($userData->getId());
+            foreach ($classroomData as $class) {
+                $tplData["classes"][] = [$class->getName(), $class->getColor()];
+            }
+        }   else {
+            header("Location: index.php?page=auth");
+            exit();
+        }
 
         return $tplData;
     }
 
+    private function getClassrooms(int $id) : array {
+        $teacher = ClassModel::getClassesByTeacherID($id);
+        $student = ClassModel::getClassesByStudentID($id);
 
+        return array_merge($teacher, $student);
+    }
 }

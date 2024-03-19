@@ -3,6 +3,8 @@
 namespace zswi\Models;
 
 use PDOException;
+use zswi\Modules\MyDatabase;
+use zswi\Modules\UserModel;
 
 class MyLogger {
 
@@ -68,9 +70,21 @@ class MyLogger {
      *
      * @throws PDOException
      */
-    public function getLoggedUserData(): mixed
+    public function getLoggedUserData(): ?UserModel
     {
-        //TODO
+        if($this->isUserLogged()) {
+            $userId = $this->mySession->readSession(self::KEY_USER);
+            if($userId == null) {
+                $this->userLogout();
+                return null;
+            }
+            $userData = $this->myDB->selectFromTable(TABLE_USER, [], "id_user=$userId");
+            if(empty($userData)){
+                $this->userLogout();
+                return null;
+            }
+            return new UserModel($userData[0]["id_user"], $userData[0]["name"], $userData[0]["login"], $userData[0]["password"], $userData[0]["email"]);
+        }
         return null;
     }
 }
