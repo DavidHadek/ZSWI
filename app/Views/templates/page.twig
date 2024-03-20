@@ -1,0 +1,30 @@
+{% set baseURL = '/ZSWI' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title | striptags }}</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ baseURL }}/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ baseURL }}/vendor/components/font-awesome/css/all.min.css" rel="stylesheet">
+    <link href="{{ baseURL }}/app/Views/css/style.css" rel="stylesheet">
+</head>
+
+{% block contents %}
+
+{% endblock contents %}
+
+<div class="container">
+    <footer class="py-3 my-4 mt-auto">
+        <p class="text-center text-muted">© 2024 Software Ninjas</p>
+    </footer>
+</div>
+
+<script src="{{ baseURL }}/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ baseURL }}/vendor/components/jquery/jquery.slim.min.js"></script>
+</body>
+</html>

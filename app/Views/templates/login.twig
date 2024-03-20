@@ -1,7 +1,6 @@
-{% block header %}
-    {% include("header.twig") %}
-{% endblock %}
+{% extends("page.twig") %}
 
+{% block contents %}
 
 <body class="bg-light">
 
@@ -17,28 +16,35 @@
                         <!-- Email -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="login">Username</label>
-                            <input type="text" id="login" name="login" class="form-control" value="{{ login is defined ? login : '' }}" required/>
-
+                            <input type="text" id="login" name="login" class="form-control"
+                                   value="{{ login is defined ? login : '' }}" required/>
                         </div>
 
                         <!-- Heslo -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="pas">Password</label>
-                            <input type="password" id="pas" name="heslo" class="form-control" required/>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-unlock-keyhole"></i></span>
+                                <input type="password" class="form-control" name="heslo" id="pas" required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-eye toggle-password" id="password-eye"
+                                       onclick="togglePasswordVisibility('pas','password-eye')"></i>
+                                </span>
+                            </div>
                         </div>
-
 
                         <!-- Potvrzeni -->
                         <input type="submit" class="btn btn-primary btn-block mb-4" name="prihlaseni" value="Log in">
                     </form>
 
-                    <p>Don't have an account? <a href="index.php?page=registration" class="link-info">Register here</a></p>
+                    <p>Don't have an account? <a href="index.php?page=registration" class="link-info">Register here</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-{% block footer %}
-{% include("footer.twig") %}
-{% endblock %}
+<script src="{{ baseURL }}/app/Views/JS/validateRegistrationAndSignIn.js"></script>
+
+{% endblock contents %}
