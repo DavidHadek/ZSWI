@@ -1,1 +1,0 @@
-docker exec -it zswi-db mysqldump -u root web > ./database_data/schema.sql
