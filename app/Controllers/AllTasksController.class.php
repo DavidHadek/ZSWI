@@ -29,7 +29,12 @@ class AllTasksController implements IController
             $tasks = $this->getAllTasks($userData->getId());
             foreach ($tasks as $task) {
                 $class = ClassModel::getClassById($task->getIdClass());
-                $tplData["tasks"][] = [$task->getName(), $task->getDeadline(), $class["color"], $task->isDone(), $task->getInstructions()];
+                $tplData["tasks"][] = [
+                    "name" => $task->getName(),
+                    "deadline" => $task->getDeadline(),
+                    "color" => $class["color"],
+                    "isDone" => $task->isDone(),
+                    "instructions" => $task->getInstructions()];
             }
         }   else {
             header("Location: index.php?page=auth");

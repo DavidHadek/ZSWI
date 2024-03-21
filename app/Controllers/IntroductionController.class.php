@@ -26,7 +26,7 @@ class IntroductionController implements IController
 
             $classroomData = $this->getClassrooms($userData->getId());
             foreach ($classroomData as $class) {
-                $tplData["classes"][] = [$class->getName(), $class->getColor()];
+                $tplData["classes"][] = ["name" => $class->getName(), "color" => $class->getColor()];
             }
         }   else {
             header("Location: index.php?page=auth");
