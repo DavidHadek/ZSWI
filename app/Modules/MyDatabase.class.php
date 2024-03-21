@@ -190,5 +190,41 @@ class MyDatabase {
         $params = array("kId" => $id);
         return $this->selectFromTable(TABLE_STUDENT_IN_CLASS, $params, "id_student = :kId");
     }
+
+    public function addTaskToDatabase(string $name, string $instructions, string $date, string $deadline, int $evaluation, int $id_class) :bool{
+        $params = array(
+            "kName" => $name,
+            "kInstructions" => $instructions,
+            "kDate" => $date,
+            "kDeadline" => $deadline,
+            "kEvaluation" => $evaluation,
+            "kIdClass" => $id_class,
+        );
+
+        $insertStatement = "name, instructions, date, deadline, evaluation, id_class";
+        $insertValues = ":kName, :kInstructions, :kDate, :kDeadline, :kEvaluation, :kIdClass";
+        return $this->insertIntoTable(TABLE_TASK, $insertStatement, $insertValues, $params);
+    }
+
+    public function getAllStudentTasks(int $idStudent) :array {
+        $params = array(
+            "kIdStudent" => $idStudent,
+        );
+        return $this->selectFromTable(TABLE_STUDENT_TASK, $params, "id_student = :kIdStudent");
+    }
+
+    public function getTaskById(int $idTask) :array {
+        $params = array(
+            "kIdTask" => $idTask,
+        );
+        return $this->selectFromTable(TABLE_TASK, $params, "id_task = :kIdTask");
+    }
+
+    public function getAllTasksFromClass(int $idClass) :array {
+        $params = array(
+            "kIdClass" => $idClass,
+        );
+        return $this->selectFromTable(TABLE_TASK, $params, "id_class = :kIdClass");
+    }
 }
 
