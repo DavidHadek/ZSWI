@@ -5,7 +5,6 @@ namespace zswi\Controllers;
 use zswi\Modules\MyLogger;
 use zswi\Modules\UserModel;
 
-
 //Might be used for later
 //define("smallPassword", 1);
 //define("numbersRequired", 2);
@@ -16,7 +15,8 @@ class AuthPageController implements IController
 {
     private MyLogger $myLG;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->myLG = new MyLogger();
     }
 
@@ -54,8 +54,8 @@ class AuthPageController implements IController
         return $templateData;
     }
 
-
-    private function validateAndLogon() : bool {
+    private function validateAndLogon(): bool
+    {
         $usernameOrEmail = $_POST["username"];
         $password = $_POST["password"];
 
@@ -63,7 +63,8 @@ class AuthPageController implements IController
         return $logger->userLogin($usernameOrEmail, $password);
     }
 
-    private function validateAndRegister() :string {
+    private function validateAndRegister(): string
+    {
         try {
             $email = $_POST["email"];
             $login = $_POST["username"];
@@ -103,20 +104,19 @@ class AuthPageController implements IController
         }
     }
 
-
     /**
      * @param string $password
      * Checks if Password is valid for registration
      * 8 letters, contains numbers, contains capital
      * @return bool true if the password is valid, false othewise
      */
-
-    private function isPasswordValid(string $password): bool{
-        if (strlen($password) < 8){
+    private function isPasswordValid(string $password): bool
+    {
+        if (strlen($password) < 8) {
             return false;
-        } elseif (!preg_match('/\d/', $password)){
+        } elseif (!preg_match('/\d/', $password)) {
             return false;
-        } elseif (!preg_match('/[A-Z]/', $password)){
+        } elseif (!preg_match('/[A-Z]/', $password)) {
             return false;
         }
         return true;
@@ -129,7 +129,4 @@ class AuthPageController implements IController
             $logger->userLogout();
         }
     }
-
-
-
 }

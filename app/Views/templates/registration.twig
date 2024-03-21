@@ -2,7 +2,11 @@
 
 {% block contents %}
 
-    <body class="bg-light">
+<body class="bg-light">
+
+<div>
+    <h6 class="error-message-title-centered">{{ alert_msg }}</h6>
+</div>
 
 <section class="text-center">
     <div class="p-5 bg"></div>
@@ -12,8 +16,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-5">Register</h2>
-                    <form id="f" action="index.php?page=home" method="post"
-                          oninput="x.value=(pas.value===pas2.value)?'':' - Hesla musí být shodná'">
+                    <form id="f" action="index.php?page=home" method="post">
                         <!-- Jmeno a Prijmeni -->
                         <div class="row">
                             <div class="col-md-6 mb-4">

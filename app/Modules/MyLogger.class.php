@@ -4,7 +4,8 @@ namespace zswi\Modules;
 
 use PDOException;
 
-class MyLogger {
+class MyLogger
+{
 
     private MyDatabase $myDB;
     private MySession $mySession;
@@ -26,7 +27,8 @@ class MyLogger {
      *
      * @throws PDOException
      */
-    public function userLogin(string $login, string $password): bool {
+    public function userLogin(string $login, string $password): bool
+    {
 
         $user = empty($user) ? UserModel::getUserByLogin($login) : null;
         $user = empty($user) ? UserModel::getUserByEmail($login) : $user;
@@ -57,7 +59,8 @@ class MyLogger {
      *
      * @return bool
      */
-    public function isUserLogged():bool {
+    public function isUserLogged(): bool
+    {
         return $this->mySession->isSessionSet(self::KEY_USER);
     }
 

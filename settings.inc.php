@@ -2,6 +2,10 @@
 
 ////// connection consts for database ///////
 
+use zswi\Controllers\AuthPageController;
+use zswi\Controllers\IntroductionController;
+use zswi\Views\View;
+
 const DB_SERVER = "localhost";
 const DB_NAME = "web";
 const DB_USER = "root";
@@ -27,20 +31,20 @@ const WEB_PAGES = array(
 
     "home" => array(
         "title" => "Main page",
-        "controller_class_name" => \zswi\Controllers\IntroductionController::class,
-        "view_class_name" => \zswi\Views\View::class,
+        "controller_class_name" => IntroductionController::class,
+        "view_class_name" => View::class,
         "template_type" => "login.twig",
     ),
     "auth" => array(
         "title" => "Login",
-        "controller_class_name" => \zswi\Controllers\AuthPageController::class,
-        "view_class_name" => \zswi\Views\View::class,
+        "controller_class_name" => AuthPageController::class,
+        "view_class_name" => View::class,
         "template_type" => "login.twig",
     ),
     "registration" => array(
         "title" => "Registration",
-        "controller_class_name" => \zswi\Controllers\AuthPageController::class,
-        "view_class_name" => \zswi\Views\View::class,
+        "controller_class_name" => AuthPageController::class,
+        "view_class_name" => View::class,
         "template_type" => "registration.twig",
     )
 );
