@@ -2,7 +2,7 @@
 
 ////// connection consts for database ///////
 
-const DB_SERVER = "localhost";
+const DB_SERVER = "zswi-db";
 const DB_NAME = "web";
 const DB_USER = "root";
 const DB_PASS = "";
