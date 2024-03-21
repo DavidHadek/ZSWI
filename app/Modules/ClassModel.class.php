@@ -1,9 +1,6 @@
 <?php
 
-namespace zswi\Models;
-
-use zswi\Modules\MyDatabase;
-use zswi\Modules\UserModel;
+namespace zswi\Modules;
 
 class ClassModel
 {

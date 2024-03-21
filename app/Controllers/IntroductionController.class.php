@@ -2,8 +2,8 @@
 
 namespace zswi\Controllers;
 
-use zswi\Models\ClassModel;
-use zswi\Models\MyLogger;
+use zswi\Modules\ClassModel;
+use zswi\Modules\MyLogger;
 
 class IntroductionController implements IController
 {

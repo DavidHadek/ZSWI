@@ -1,10 +1,8 @@
 <?php
 
-namespace zswi\Models;
+namespace zswi\Modules;
 
 use PDOException;
-use zswi\Modules\MyDatabase;
-use zswi\Modules\UserModel;
 
 class MyLogger {
 
@@ -30,15 +28,15 @@ class MyLogger {
      */
     public function userLogin(string $login, string $password): bool {
 
-        $params = array("kLogin" => $login);
-        $where = "login = :kLogin";
-        $user = $this->myDB->selectFromTable(TABLE_USER, $params, $where);
+        $user = empty($user) ? UserModel::getUserByLogin($login) : null;
+        $user = empty($user) ? UserModel::getUserByEmail($login) : $user;
 
-        if (!empty($user)) {
-            if (password_verify($password, $user[0]['password'])) {
-                $this->mySession->addSession(self::KEY_USER, $user[0]['id_user']);
-                return true;
-            }
+        if (empty($user))
+            return false;
+
+        if (password_verify($password, $user->getPassword())) {
+            $this->mySession->addSession(self::KEY_USER, $user);
+            return true;
         }
 
         return false;
@@ -72,19 +70,6 @@ class MyLogger {
      */
     public function getLoggedUserData(): ?UserModel
     {
-        if($this->isUserLogged()) {
-            $userId = $this->mySession->readSession(self::KEY_USER);
-            if($userId == null) {
-                $this->userLogout();
-                return null;
-            }
-            $userData = $this->myDB->selectFromTable(TABLE_USER, [], "id_user=$userId");
-            if(empty($userData)){
-                $this->userLogout();
-                return null;
-            }
-            return new UserModel($userData[0]["id_user"], $userData[0]["name"], $userData[0]["login"], $userData[0]["password"], $userData[0]["email"]);
-        }
-        return null;
+        return $this->mySession->readSession(self::KEY_USER);
     }
 }
