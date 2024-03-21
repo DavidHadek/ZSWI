@@ -42,5 +42,11 @@ const WEB_PAGES = array(
         "controller_class_name" => \zswi\Controllers\AuthPageController::class,
         "view_class_name" => \zswi\Views\View::class,
         "template_type" => "registration.twig",
-    )
+    ),
+    "all-tasks" => array(
+        "title" => "All Tasks",
+        "controller_class_name" => \zswi\Controllers\AllTasksController::class,
+        "view_class_name" => \zswi\Views\View::class,
+        "template_type" => "",
+    ),
 );
