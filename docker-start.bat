@@ -12,7 +12,7 @@ IF /i "%doLoop%" == "y" GOTO loop
 exit
 
 :loop
-timeout /t 30 /nobreak
+timeout /t 60 /nobreak
 docker exec -it zswi-db mysqldump -u root --no-data=False --databases web > ./database_data/schema.sql
 echo Export completed successfully
 goto loop
