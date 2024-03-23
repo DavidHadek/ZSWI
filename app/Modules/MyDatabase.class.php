@@ -156,13 +156,13 @@ class MyDatabase {
     public function getUserDataByLogin(string $login) {
         $params = array("kLogin" => $login);
         $user = $this->selectFromTable(TABLE_USER, $params, "login = :kLogin");
-        return $user[0];
+        return $user[0] ?? null;
     }
 
     public function getUserDataByEmail(string $email) {
         $params = array("kEmail" => $email);
         $user = $this->selectFromTable(TABLE_USER, $params, "email = :kEmail");
-        return $user[0];
+        return $user[0] ?? null;
     }
 
     ///////////// CLASS TABLE FUNCTIONS /////////////

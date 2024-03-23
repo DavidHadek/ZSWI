@@ -31,7 +31,7 @@ const WEB_PAGES = array(
         "view_class_name" => \zswi\Views\View::class,
         "template_type" => "login.twig",
     ),
-    "auth" => array(
+    "login" => array(
         "title" => "Login",
         "controller_class_name" => \zswi\Controllers\AuthPageController::class,
         "view_class_name" => \zswi\Views\View::class,
