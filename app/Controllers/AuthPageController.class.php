@@ -2,6 +2,7 @@
 
 namespace zswi\Controllers;
 
+use zswi\Alerts;
 use zswi\Modules\MyLogger;
 use zswi\Modules\UserModel;
 
@@ -31,22 +32,25 @@ class AuthPageController implements IController
             $templateData["alert-msg"] = "Successfully logout";
         }
 
-        if (isset($_GET["part"]) && $_GET["part"] == "register") {
-            $templateData["part"] = "register";
-        } else {
-            $templateData["part"] = "login";
-        }
+//        if (isset($_GET["part"]) && $_GET["part"] == "register") {
+//            $templateData["part"] = "register";
+//        } else {
+//            $templateData["part"] = "login";
+//        }
 
         if (isset($_POST["register"])) {
             $errorMsg = $this->validateAndRegister();
             $templateData["alert-msg"] = $errorMsg;
+            if ($errorMsg == Alerts::SUCCESS) {
+                header("Location: index.php");
+            }
         }
 
         if (isset($_POST["login"])) {
             if ($this->validateAndLogon()) {
-                $errorMsg = \Alert::SUCCESS->value;
+                $errorMsg = Alerts::SUCCESS->value;
             } else {
-                $errorMsg = \Alert::INVALID_USER_PASSWORD->value;
+                $errorMsg = Alerts::INVALID_USER_PASSWORD->value;
             }
             $templateData["alert-msg"] = $errorMsg;
         }
@@ -56,50 +60,54 @@ class AuthPageController implements IController
 
 
     private function validateAndLogon() : bool {
-        $usernameOrEmail = $_POST["username"];
+        $usernameOrEmail = $_POST["login"];
         $password = $_POST["password"];
 
         $logger = new MyLogger();
         return $logger->userLogin($usernameOrEmail, $password);
     }
 
-    private function validateAndRegister() :string {
+    private function validateAndRegister() :Alerts {
         try {
             $email = $_POST["email"];
-            $login = $_POST["username"];
+            $login = $_POST["login"];
 
             if (empty($email) or empty($login)) {
-                return \Alert::NO_EMAIL_LOGIN->value;
+                return Alerts::NO_EMAIL_LOGIN;
             }
 
             if (UserModel::getUserByEmail($email) != null) {
-                return \Alert::EMAIL_ALREADY_EXISTS->value;
+                return Alerts::EMAIL_ALREADY_EXISTS;
             }
 
             if (UserModel::getUserByLogin($login)) {
-                return \Alert::USERNAME_ALREADY_EXISTS->value;
+                return Alerts::USERNAME_ALREADY_EXISTS;
             }
 
             $password = $_POST["password"];
-            $passwordCheck = $_POST["password-check"];
+            $passwordCheck = $_POST["password2"];
             if ($password != $passwordCheck) {
-                return \Alert::PASSWORD_NOT_THE_SAME->value;
+                return Alerts::PASSWORD_NOT_THE_SAME;
             }
 
             if (!$this->IsPasswordValid($password))
-                return \Alert::PASSWORD_NOT_VALID->value;
+                return Alerts::PASSWORD_NOT_VALID;
 
             $password = password_hash($password, PASSWORD_BCRYPT);
+
             $name = $_POST["name"] ?? "";
 
+            if (isset($_POST["surname"]))
+                $name = $name . " " . $_POST["surname"];
+
             if (UserModel::registerNewUser($email, $login, $password, $name))
-                return \Alert::SUCCESS->value;
+                return Alerts::SUCCESS;
             else
-                return \Alert::UNKNOWN_ERROR->value;
+                return Alerts::UNKNOWN_ERROR;
 
 
         } catch (\Exception) {
-            return \Alert::UNKNOWN_ERROR->value;
+            return Alerts::UNKNOWN_ERROR;
         }
     }
 
