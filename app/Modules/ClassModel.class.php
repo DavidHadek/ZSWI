@@ -40,11 +40,27 @@ class ClassModel
         return new ClassModel($id, $name, $color, $id_teacher);
     }
 
+    public static function getClassById(int $id): ?ClassModel {
+        $db = new MyDatabase();
+
+        $data = $db->getClassByID($id);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        $id = $data["id_class"];
+        $name = $data["name"];
+        $color = $data["color"];
+        $id_teacher = $data["id_teacher"];
+
+        return new ClassModel($id, $name, $color, $id_teacher);
+    }
+
     public static function getClassesByTeacherID(int $id): array {
         $db = new MyDatabase();
 
         $classes = array();
-        $count = 0;
         $data = $db->getClassesByTeacherID($id);
 
         if (empty($data)) {
@@ -52,8 +68,7 @@ class ClassModel
         }
 
         foreach ($data as $class) {
-            $classes[$count] = new ClassModel($class["id_class"], $class["name"], $class["color"], $class["id_teacher"]);
-            $count++;
+            $classes[] = new ClassModel($class["id_class"], $class["name"], $class["color"], $class["id_teacher"]);
         }
 
         return $classes;
@@ -64,7 +79,6 @@ class ClassModel
         $db = new MyDatabase();
 
         $classes = array();
-        $count = 0;
         $data = $db->getClassesByStudentID($id);
 
         if (empty($data)) {
@@ -72,8 +86,8 @@ class ClassModel
         }
 
         foreach ($data as $class) {
-            $classes[$count] = new ClassModel($class["id_class"], $class["name"], $class["color"], $class["id_teacher"]);
-            $count++;
+            $c = $db->getClassByID($class["id_class"]);
+            $classes[] = new ClassModel($c["id_class"], $c["name"], $c["color"], $c["id_teacher"]);
         }
 
         return $classes;
@@ -104,8 +118,4 @@ class ClassModel
     {
         return $this->id_teacher;
     }
-
-
-
-
 }

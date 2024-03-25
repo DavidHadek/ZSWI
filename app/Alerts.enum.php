@@ -1,5 +1,7 @@
 <?php
-enum Alert: string
+
+namespace zswi;
+enum Alerts: string
 {
     case SUCCESS = 'Success';
     case EMAIL_ALREADY_EXISTS = 'Email already exists';

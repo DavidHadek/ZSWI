@@ -82,7 +82,9 @@ CREATE TABLE `student_in_class` (
 CREATE TABLE `student_task` (
   `id_student_task` int(11) NOT NULL,
   `id_student_in_class` int(11) DEFAULT NULL,
-  `id_task` int(11) DEFAULT NULL
+  `id_task` int(11) DEFAULT NULL,
+  `is_done` tinyint(1) DEFAULT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
@@ -94,6 +96,7 @@ CREATE TABLE `student_task` (
 CREATE TABLE `task` (
   `id_task` int(11) NOT NULL,
   `id_class` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `instructions` varchar(255) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `deadline` datetime DEFAULT NULL,
