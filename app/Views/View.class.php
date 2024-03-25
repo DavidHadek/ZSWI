@@ -18,7 +18,7 @@ class View
         $templatesDirectory = TWIG_TPL_DIR;
 //        $webInfo = WEB_PAGES[$pageType];
         $currentTemplateName = $pageType;
-        var_dump($pageType);
+        //var_dump($pageType);
         $loader = new FilesystemLoader($templatesDirectory);
         $twig = new Environment($loader, ['debug' => true,]);
 
