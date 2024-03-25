@@ -2,6 +2,11 @@
 
 ////// connection consts for database ///////
 
+use zswi\Controllers\AllTasksController;
+use zswi\Controllers\AuthPageController;
+use zswi\Controllers\IntroductionController;
+use zswi\Views\View;
+
 const DB_SERVER = "localhost";
 const DB_NAME = "web";
 const DB_USER = "root";
@@ -45,8 +50,8 @@ const WEB_PAGES = array(
     ),
     "all-tasks" => array(
         "title" => "All Tasks",
-        "controller_class_name" => \zswi\Controllers\AllTasksController::class,
-        "view_class_name" => \zswi\Views\View::class,
+        "controller_class_name" => AllTasksController::class,
+        "view_class_name" => View::class,
         "template_type" => "",
     ),
 );
