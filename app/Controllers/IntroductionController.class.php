@@ -15,7 +15,7 @@ class IntroductionController implements IController
 
     public function show(string $pageTitle): array
     {
-        $tplData = array();
+        $tplData = HeaderController::getHeaderTemplateData();
 
         $tplData["page-title"] = $pageTitle;
 
@@ -30,7 +30,6 @@ class IntroductionController implements IController
             }
         }   else {
             header("Location: index.php?page=login");
-            exit();
         }
 
         return $tplData;

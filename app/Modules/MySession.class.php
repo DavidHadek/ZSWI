@@ -2,6 +2,8 @@
 
 namespace zswi\Modules;
 
+use zswi\Alerts;
+
 class MySession {
 
     /**
@@ -60,6 +62,44 @@ class MySession {
     public function removeSession(string $key): void
     {
         unset($_SESSION[$key]);
+    }
+
+    /**
+     * Function to push an alert into the array
+     * If the array doesn't exist yet, it will instantiate a new one
+     * @param Alerts $alert
+     * @return void
+     */
+    public function addAlert(Alerts $alert) {
+        if (empty($_SESSION["alerts"])) {
+            $_SESSION["alerts"] = array();
+        }
+        $_SESSION["alerts"][] = $alert;
+    }
+
+    /**
+     * Gets all the arrays from the session as an array
+     * or null if there are not any.
+     * It doesn't delete them.
+     * @return array|null
+     */
+    public function getAlerts() {
+        if (empty($_SESSION["alerts"]))
+            return null;
+
+        $alerts = array();
+        for ($i = 0; $i < sizeof($_SESSION["alerts"]); $i++) {
+            $alerts[$i] = $_SESSION["alerts"][$i];
+        }
+        return $alerts;
+    }
+
+    /**
+     * Method to remove all the alerts from the array
+     * @return void
+     */
+    public function removeAlerts() {
+        $_SESSION["alerts"] = array();
     }
 
 }

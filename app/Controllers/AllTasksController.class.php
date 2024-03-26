@@ -17,7 +17,7 @@ class AllTasksController implements IController
 
     public function show(string $pageTitle): array
     {
-        $tplData = array();
+        $tplData = HeaderController::getHeaderTemplateData();
 
         $tplData["page-title"] = $pageTitle;
 
