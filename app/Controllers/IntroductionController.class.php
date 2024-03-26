@@ -29,7 +29,7 @@ class IntroductionController implements IController
                 $tplData["classes"][] = ["name" => $class->getName(), "color" => $class->getColor()];
             }
         }   else {
-            header("Location: index.php?page=auth");
+            header("Location: index.php?page=login");
             exit();
         }
 

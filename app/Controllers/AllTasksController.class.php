@@ -37,7 +37,7 @@ class AllTasksController implements IController
                     "instructions" => $task->getInstructions()];
             }
         }   else {
-            header("Location: index.php?page=auth");
+            header("Location: index.php?page=login");
             exit();
         }
 
