@@ -3,8 +3,6 @@
 {% endblock %}
 
 
-<body class="bg-light">
-
 <section class="text-center">
     <div class="p-5 bg"></div>
     <div class="card mx-4 mx-md-5 shadow-5-strong form">
@@ -13,18 +11,18 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-5">Login</h2>
-                    <form id="f" action="index.php?page=home" method="post">
+                    <form id="f" action="index.php?page=login" method="post">
                         <!-- Email -->
                         <div class="form-outline mb-4">
-                            <label class="form-label" for="login">Username</label>
-                            <input type="text" id="login" name="login" class="form-control" value="{{ login is defined ? login : '' }}" required/>
+                            <label class="form-label" for="username">Username</label>
+                            <input type="text" id="login" name="username" class="form-control" value="{{ login is defined ? login : '' }}" required/>
 
                         </div>
 
                         <!-- Heslo -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="pas">Password</label>
-                            <input type="password" id="pas" name="heslo" class="form-control" required/>
+                            <input type="password" id="pas" name="password" class="form-control" required/>
                         </div>
 
 

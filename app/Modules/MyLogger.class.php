@@ -8,7 +8,7 @@ class MyLogger {
 
     private MyDatabase $myDB;
     private MySession $mySession;
-    private const KEY_USER = "current_user_id";
+    private const KEY_USER = "user";
 
     public function __construct()
     {
@@ -30,7 +30,6 @@ class MyLogger {
 
         $user = empty($user) ? UserModel::getUserByLogin($login) : null;
         $user = empty($user) ? UserModel::getUserByEmail($login) : $user;
-
         if (empty($user))
             return false;
 

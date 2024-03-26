@@ -4,6 +4,7 @@ namespace zswi\Controllers;
 
 use zswi\Alerts;
 use zswi\Modules\MyLogger;
+use zswi\Modules\MySession;
 use zswi\Modules\UserModel;
 
 
@@ -16,20 +17,23 @@ use zswi\Modules\UserModel;
 class AuthPageController implements IController
 {
     private MyLogger $myLG;
+    private MySession $mySession;
 
     public function __construct() {
         $this->myLG = new MyLogger();
+        $this->mySession = new MySession();
     }
 
     public function show(string $pageTitle): array
     {
-        $templateData = array();
+        $templateData = HeaderController::getHeaderTemplateData();
 
         $templateData["page-title"] = $pageTitle;
 
-        if (isset($_GET["logout"])) {
+        if (isset($_POST["logout"])) {
             $this->logout();
-            $templateData["alert-msg"] = "Successfully logout";
+            $this->mySession->addAlert(Alerts::SUCCESS);
+            header("Location: index.php");
         }
 
 //        if (isset($_GET["part"]) && $_GET["part"] == "register") {
@@ -39,20 +43,24 @@ class AuthPageController implements IController
 //        }
 
         if (isset($_POST["register"])) {
-            $errorMsg = $this->validateAndRegister();
-            $templateData["alert-msg"] = $errorMsg;
-            if ($errorMsg == Alerts::SUCCESS) {
-                header("Location: index.php");
+            $alert = $this->validateAndRegister();
+            $this->mySession->addAlert($alert);
+            if ($alert == Alerts::SUCCESS) {
+                header("Location: index.php?page=login");
             }
         }
 
         if (isset($_POST["login"])) {
             if ($this->validateAndLogon()) {
-                $errorMsg = Alerts::SUCCESS->value;
+                $alert = Alerts::SUCCESS;
+                $this->mySession->addAlert($alert);
+                header("Location: index.php?page=home");
             } else {
-                $errorMsg = Alerts::INVALID_USER_PASSWORD->value;
+                $alert = Alerts::INVALID_USER_PASSWORD;
+                $this->mySession->addAlert($alert);
+                header("Location: index.php?page=login");
             }
-            $templateData["alert-msg"] = $errorMsg;
+
         }
 
         return $templateData;
@@ -60,7 +68,7 @@ class AuthPageController implements IController
 
 
     private function validateAndLogon() : bool {
-        $usernameOrEmail = $_POST["login"];
+        $usernameOrEmail = $_POST["username"];
         $password = $_POST["password"];
 
         $logger = new MyLogger();
@@ -70,7 +78,7 @@ class AuthPageController implements IController
     private function validateAndRegister() :Alerts {
         try {
             $email = $_POST["email"];
-            $login = $_POST["login"];
+            $login = $_POST["username"];
 
             if (empty($email) or empty($login)) {
                 return Alerts::NO_EMAIL_LOGIN;

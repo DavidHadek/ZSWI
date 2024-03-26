@@ -17,7 +17,7 @@ class AllTasksController implements IController
 
     public function show(string $pageTitle): array
     {
-        $tplData = array();
+        $tplData = HeaderController::getHeaderTemplateData();
 
         $tplData["page-title"] = $pageTitle;
 
@@ -37,7 +37,7 @@ class AllTasksController implements IController
                     "instructions" => $task->getInstructions()];
             }
         }   else {
-            header("Location: index.php?page=auth");
+            header("Location: index.php?page=login");
             exit();
         }
 
